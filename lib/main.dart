@@ -10,9 +10,11 @@ class homepage extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: ElevatedButton(onPressed: () {firebaseHelper().signuot().then((value){
-          Get.to(LoginPage());
-        });  }, child: Text("Sign out"),),
+        child: Center(
+          child: ElevatedButton(onPressed: () {firebaseHelper().signuot().then((value){
+            Get.to(LoginPage());
+          });  }, child: Text("Sign out"),),
+        ),
       ),
     );
   }

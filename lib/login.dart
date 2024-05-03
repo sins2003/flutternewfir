@@ -1,15 +1,23 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutternewfir/Database/FireBaseHelper.dart';
 import 'package:flutternewfir/main.dart';
+import 'package:flutternewfir/signup.dart';
 import 'package:get/get.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: "AIzaSyCxLLzQPvqpdoYAKF0R6k9f5RyB2FUX82A",
+          appId: "1:452429422229:android:ba8bb48dca117efcccc59c",
+          projectId: "januaryfirebase-1fba9",
+          messagingSenderId: ''));
+  User? user = FirebaseAuth.instance.currentUser;
   runApp(GetMaterialApp(
-    home: LoginPage(),
+    home: user == null ? LoginPage() : homepage(),
   ));
 }
 
@@ -45,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                       !email.contains(".") ||
                       !email.contains("@")) {
                     return "Please enter valid email";
-                  }else{
+                  } else {
                     return null;
                   }
                 },
@@ -59,9 +67,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               TextFormField(
                 validator: (password) {
-                  if(password!.isEmpty||password.length<6){
+                  if (password!.isEmpty || password.length < 6) {
                     return "Please enter valid passord";
-                  }else{
+                  } else {
                     return null;
                   }
                 },
@@ -76,23 +84,29 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: 30,
               ),
-              ElevatedButton(onPressed: () {
-                if(formkey.currentState!.validate()){
-                  formkey.currentState!.save();
-                  firebaseHelper().signin(mail: lemail!, password: lpass!).then((value){
-                    if(value==null){
-                      Get.to(homepage());
-                    }else{
-                      Get.snackbar("error", value);
+              ElevatedButton(
+                  onPressed: () {
+                    if (formkey.currentState!.validate()) {
+                      formkey.currentState!.save();
+                      firebaseHelper()
+                          .signin(mail: lemail!, password: lpass!)
+                          .then((value) {
+                        if (value == null) {
+                          Get.to(homepage());
+                        } else {
+                          Get.snackbar("error", value);
+                        }
+                      });
                     }
-                  });
-                }
-              }, child: Text("LOG IN")),
+                  },
+                  child: Text("LOG IN")),
               SizedBox(
                 height: 10,
               ),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(SignUpPage());
+                  },
                   child: Text("dont have a account? Create an account"))
             ],
           ),
