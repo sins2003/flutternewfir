@@ -37,12 +37,11 @@ class _PhnAuthState extends State<PhnAuth> {
       verificationCompleted: (PhoneAuthCredential credential) async {
         await auth.signInWithCredential(credential).then((value) async {
           if (value.user != null) {
-            Navigator.pushAndRemoveUntil(
+            Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => homepage(),
-                ),
-                (route) => false);
+                ));
           }
         });
       },
@@ -57,7 +56,9 @@ class _PhnAuthState extends State<PhnAuth> {
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
-
+  Future<void>signuot()async{
+    await auth.signOut();
+  }
   Future<void> verifyOTPcode() async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: recieveId, smsCode: otpCntr.text);
@@ -75,7 +76,9 @@ class _PhnAuthState extends State<PhnAuth> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Phone Auth"),),
+      appBar: AppBar(
+        title: Text("Phone Auth"),
+      ),
       body: Container(
         child: Column(
           children: [
@@ -109,11 +112,11 @@ class _PhnAuthState extends State<PhnAuth> {
                     verifyUserPhnNum();
                   }
                   FocusManager.instance.primaryFocus?.unfocus();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => homepage(),
-                      ));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => homepage(),
+                  //     ));
                 },
                 child: Text(otpFieldVisibility ? "LOGIN" : "Get OTP"))
           ],
