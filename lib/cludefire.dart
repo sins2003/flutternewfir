@@ -39,7 +39,15 @@ class _cludefireState extends State<cludefire> {
 
   Future<void> addUser() async{
     userCollection.add({
+      'name':namectr.text,
+      'password':passctr.text,
+    }).then((value) {
+      print("user add successfully");
+      namectr.clear();
+      passctr.clear();
 
-    }).then((value) => null)
+    }).catchError((error){
+      print("failed to add user $error");
+    });
   }
 }
