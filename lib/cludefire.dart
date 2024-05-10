@@ -38,6 +38,8 @@ class _cludefireState extends State<cludefire> {
   }
 
   Future<void> addUser() async{
+    userCollection.add({
 
+    }).then((value) => null)
   }
 }
